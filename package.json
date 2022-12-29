@@ -4,12 +4,13 @@
   "license": "UNLICENSED",
   "scripts": {
     "start": "NODE_ENV=development PORT=4000 webpack --watch --progress",
-    "build:staging": "NODE_ENV=production webpack --progress",
+    "build": "NODE_ENV=production webpack --progress",
     "codegen:graphql": "graphql-codegen"
   },
   "dependencies": {
     "@google-cloud/logging-winston": "^5.2.3",
     "apollo-server-express": "^3.11.1",
+    "express": "^4.18.2",
     "graphql": "^16.6.0",
     "winston": "^3.8.2"
   },

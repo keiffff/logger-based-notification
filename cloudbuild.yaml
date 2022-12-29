@@ -2,12 +2,16 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
     args:
+      ['-c', 'docker pull asia-northeast1-docker.pkg.dev/$PROJECT_ID/logger-based-notification/server:latest || exit 0']
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
       [
         '-c',
-        'docker build -t asia-northeast1-docker.pkg.dev/$PROJECT_ID/logger-based-notification:$SHORT_SHA -f ${_PATH}/Dockerfile --build-arg --cache-from asia-northeast1-docker.pkg.dev/$PROJECT_ID/logger-based-notification:$SHORT_SHA ${_PATH}',
+        'docker build -t asia-northeast1-docker.pkg.dev/$PROJECT_ID/logger-based-notification/server:$SHORT_SHA -f Dockerfile --cache-from asia-northeast1-docker.pkg.dev/$PROJECT_ID/logger-based-notification/server:$SHORT_SHA ${_PATH}',
       ]
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'asia-northeast1-docker.pkg.dev/$PROJECT_ID/logger-based-notification:$SHORT_SHA']
+    args: ['push', 'asia-northeast1-docker.pkg.dev/$PROJECT_ID/logger-based-notification/server:$SHORT_SHA']
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args:
@@ -16,7 +20,7 @@ steps:
         'deploy',
         'logger-based-notification',
         '--image',
-        'asia-northeast1-docker.pkg.dev/$PROJECT_ID/logger-based-notification:$SHORT_SHA',
+        'asia-northeast1-docker.pkg.dev/$PROJECT_ID/logger-based-notification/server:$SHORT_SHA',
         '--region',
         'asia-northeast1',
         '--platform',
@@ -26,5 +30,5 @@ steps:
 substitutions:
   _PATH: .
 images:
-  - 'asia-northeast1-docker.pkg.dev/$PROJECT_ID/logger-based-notification:$SHORT_SHA'
+  - 'asia-northeast1-docker.pkg.dev/$PROJECT_ID/logger-based-notification/server:$SHORT_SHA'
 logsBucket: 'gs://premices-373106_cloudbuild'
